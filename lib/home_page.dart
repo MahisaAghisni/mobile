@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> mahasiswa = [];
   void refreshMahasiswa() async {
-    final data = await SQLHelper.insert();
+    final data = await SQLHelper.get();
     setState(() {
       mahasiswa = data;
     });
@@ -96,8 +96,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> tambahMahasiswa() async {
-    await SQLHelper.tambahMahasiswa(
+  Future<void> add() async {
+    await SQLHelper.add(
         nimController.text,
         namaController.text,
         alamatController.text,
@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(20),
                         )),
                     onPressed: () async {
-                      await tambahMahasiswa();
+                      await add();
                       nimController.text = '';
                       namaController.text = '';
                       alamatController.text = '';

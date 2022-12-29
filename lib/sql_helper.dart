@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart' as sql;
 class SQLHelper {
   // fungsi membuat database
 
-  static Future<void> createTables(sql.Database database) async {
+  static Future<void> onCreate(sql.Database database) async {
     await database.execute("""
     CREATE TABLE mahasiswa (
       nim TEXT PRIMARY KEY NOT NULL,
@@ -23,13 +23,13 @@ class SQLHelper {
   static Future<sql.Database> db() async {
     return sql.openDatabase('mahasiswa.db', version: 1,
         onCreate: (sql.Database database, int version) async {
-      await createTables(database);
+      await onCreate(database);
     });
   }
 
   // tambah database
-  static Future<int> tambahMahasiswa(String nim, String nama, String alamat,
-      String telepon, String jenisKelamin, String foto) async {
+  static Future<int> add(String nim, String nama, String alamat, String telepon,
+      String jenisKelamin, String foto) async {
     final db = await SQLHelper.db();
     final data = {
       'nim': nim,
@@ -43,7 +43,7 @@ class SQLHelper {
   }
 
   // ambil data
-  static Future<List<Map<String, dynamic>>> insert() async {
+  static Future<List<Map<String, dynamic>>> get() async {
     final db = await SQLHelper.db();
     return db.query('mahasiswa');
   }
