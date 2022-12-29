@@ -43,13 +43,13 @@ class SQLHelper {
   }
 
   // ambil data
-  static Future<List<Map<String, dynamic>>> getMahasiswa() async {
+  static Future<List<Map<String, dynamic>>> insert() async {
     final db = await SQLHelper.db();
     return db.query('mahasiswa');
   }
 
   // update database
-  static Future<int> updateMahasiswa(String nim, String nama, String alamat,
+  static Future<int> update(String nim, String nama, String alamat,
       String telepon, String jenisKelamin, String foto) async {
     final db = await SQLHelper.db();
     final data = {
@@ -65,7 +65,7 @@ class SQLHelper {
   }
 
   // hapus database
-  static Future<void> hapusMahasiswa(String nim) async {
+  static Future<void> delete(String nim) async {
     final db = await SQLHelper.db();
     await db.delete('mahasiswa', where: "nim = $nim");
   }

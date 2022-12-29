@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Map<String, dynamic>> mahasiswa = [];
   void refreshMahasiswa() async {
-    final data = await SQLHelper.getMahasiswa();
+    final data = await SQLHelper.insert();
     setState(() {
       mahasiswa = data;
     });
@@ -80,14 +80,14 @@ class _HomePageState extends State<HomePage> {
               ])),
               leading: Image.file(File(mahasiswa[index]['foto'])),
               trailing: IconButton(
-                  onPressed: () => hapusMahasiswa(mahasiswa[index]['nim']),
+                  onPressed: () => delete(mahasiswa[index]['nim']),
                   icon: const Icon(Icons.delete)),
             ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            modalForm();
+            create();
           },
           child: const Icon(Icons.add),
           backgroundColor: Color.fromARGB(207, 11, 108, 125),
@@ -107,13 +107,13 @@ class _HomePageState extends State<HomePage> {
     refreshMahasiswa();
   }
 
-  void hapusMahasiswa(String nim) async {
-    await SQLHelper.hapusMahasiswa(nim);
+  void delete(String nim) async {
+    await SQLHelper.delete(nim);
     refreshMahasiswa();
   }
 
   // form tambah
-  void modalForm() async {
+  void create() async {
     showModalBottomSheet(
         context: context,
         builder: (_) => Container(
