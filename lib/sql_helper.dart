@@ -9,8 +9,9 @@ class SQLHelper {
 
   static Future<void> onCreate(sql.Database database) async {
     await database.execute("""
-    CREATE TABLE mahasiswa (
-      nim TEXT PRIMARY KEY NOT NULL,
+    CREATE TABLE list_mahasiswa (
+      id Integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+      nim TEXT ,
       nama TEXT,
       alamat TEXT,
       telepon TEXT,
@@ -21,15 +22,24 @@ class SQLHelper {
   }
 
   static Future<sql.Database> db() async {
-    return sql.openDatabase('mahasiswa.db', version: 1,
-        onCreate: (sql.Database database, int version) async {
+    return sql.openDatabase('list_mahasiswa_polinema.db', version: 1,
+        onCreate: (
+      sql.Database database,
+      int version,
+    ) async {
       await onCreate(database);
     });
   }
 
   // tambah database
-  static Future<int> add(String nim, String nama, String alamat, String telepon,
-      String jenisKelamin, String foto) async {
+  static Future<int> add(
+    String nim,
+    String nama,
+    String alamat,
+    String telepon,
+    String jenisKelamin,
+    String foto,
+  ) async {
     final db = await SQLHelper.db();
     final data = {
       'nim': nim,
@@ -39,34 +49,20 @@ class SQLHelper {
       'jenisKelamin': jenisKelamin,
       'foto': foto,
     };
-    return await db.insert('mahasiswa', data);
+    return await db.insert('list_mahasiswa', data);
   }
 
-  // ambil data
+  // get all data
   static Future<List<Map<String, dynamic>>> get() async {
     final db = await SQLHelper.db();
-    return db.query('mahasiswa');
+    return db.query('list_mahasiswa');
   }
 
-  // update database
-  static Future<int> update(String nim, String nama, String alamat,
-      String telepon, String jenisKelamin, String foto) async {
-    final db = await SQLHelper.db();
-    final data = {
-      'nim': nim,
-      'nama': nama,
-      'alamat': alamat,
-      'telepon': telepon,
-      'jenisKelamin': jenisKelamin,
-      'foto': foto,
-    };
+  
 
-    return await db.update('mahasiswa', data, where: "nim=$nim");
-  }
-
-  // hapus database
-  static Future<void> delete(String nim) async {
+  // delete data
+  static Future<void> delete(int id) async {
     final db = await SQLHelper.db();
-    await db.delete('mahasiswa', where: "nim = $nim");
+    await db.delete('list_mahasiswa', where: "id = $id");
   }
 }
